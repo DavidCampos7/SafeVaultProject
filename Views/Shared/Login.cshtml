@@ -1,0 +1,65 @@
+@model SafeVault.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "User Login";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-lg p-4 mt-5">
+            <div class="card-body">
+                <h1 class="card-title text-center mb-4 text-success">
+                    <i class="bi bi-person-check-fill me-2"></i> Welcome Back
+                </h1>
+
+                @* Mostrar mensajes de éxito después de una redirección (ej. desde el registro) *@
+                @if (TempData["StatusMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        @TempData["StatusMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                @* El Tag Helper asp-action debe coincidir con la acción POST en el AccountController *@
+                <form asp-controller="AccountMvc" asp-action="Login" method="post">
+                    
+                    @* Mostrar errores generales de validación (ej. usuario/contraseña incorrectos) *@
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label visually-hidden">Email address</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+                            <input asp-for="Email" class="form-control" placeholder="Email address" required />
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Password" class="form-label visually-hidden">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                            <input asp-for="Password" type="password" class="form-control" placeholder="Password" required />
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-lg mt-3">
+                            <i class="bi bi-box-arrow-in-right me-2"></i> Log In
+                        </button>
+                    </div>
+                </form>
+
+                <div class="text-center mt-4">
+                    <p class="text-muted">¿No tienes una cuenta? <a asp-controller="Account" asp-action="Register">Regístrate aquí</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
